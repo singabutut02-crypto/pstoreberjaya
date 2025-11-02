@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran PStore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid #333;
+            margin-bottom: 30px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #000000, #2a2a2a);
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .apple-logo {
+            width: 60px;
+            height: 60px;
+            background-color: #000000;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .apple-logo::before {
+            content: "";
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50% 50% 50% 50%;
+            clip-path: polygon(
+                50% 0%, 
+                80% 20%, 
+                100% 50%, 
+                80% 80%, 
+                50% 100%, 
+                20% 80%, 
+                0% 50%, 
+                20% 20%
+            );
+        }
+
+        /* Efek gigitan di sebelah kanan */
+        .apple-logo::after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #000000;
+            border-radius: 50%;
+            top: 15px;
+            right: 8px;
+            transform: rotate(45deg);
+        }
+
+        .store-name {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(to right, #ffffff, #a0a0a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 10px;
+            color: #f0f0f0;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .payment-info {
+            background-color: #151515;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #333;
+        }
+
+        .info-title {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .info-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+
+        .payment-method {
+            margin-bottom: 30px;
+        }
+
+        .method-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #f0f0f0;
+        }
+
+        .dana-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #00a3ff, #0080ff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 131, 255, 0.3);
+            text-decoration: none;
+        }
+
+        .dana-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 131, 255, 0.4);
+            background: linear-gradient(135deg, #0080ff, #0066cc);
+        }
+
+        .dana-button:active {
+            transform: translateY(1px);
+        }
+
+        .dana-logo {
+            width: 28px;
+            height: 28px;
+            margin-right: 12px;
+            background-color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0080ff;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #888;
+            border-top: 1px solid #333;
+            background-color: #151515;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 30%;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #ffffff, #a0a0a0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #000000;
+        }
+
+        .step-text {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .social-media {
+            width: 100%;
+            max-width: 500px;
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid #333;
+            padding: 25px;
+        }
+
+        .social-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #f0f0f0;
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .social-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .whatsapp-button {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(37, 211, 102, 0.4);
+            background: linear-gradient(135deg, #128C7E, #075E54);
+        }
+
+        .tiktok-button {
+            background: linear-gradient(135deg, #000000, #333333);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .tiktok-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #333333, #000000);
+        }
+
+        .social-icon {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .container, .social-media {
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .store-name {
+                font-size: 24px;
+            }
+            
+            .title, .social-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <div class="apple-logo"></div>
+                <h1 class="store-name">PSTORE</h1>
+            </div>
+            <h2 class="title">Pembayaran</h2>
+        </div>
+        
+        <div class="content">
+            <div class="payment-info">
+                <div class="info-title">Silahkan Lakukan Pembayaran</div>
+                <div class="info-text">
+                    Selesaikan pembayaran Anda untuk melanjutkan proses pembelian di PStore.
+                </div>
+            </div>
+            
+            <div class="payment-method">
+                <div class="method-title">Metode Pembayaran</div>
+                <a href="https://link.dana.id/minta?full_url=https://qr.dana.id/v1/281012092025110238691307" target="_blank" class="dana-button">
+                    <div class="dana-logo">D</div>
+                    Dana
+                </a>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Pilih Metode</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">Bayar</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Selesai</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            &copy; 2023 PStore. All rights reserved.
+        </div>
+    </div>
+    
+    <div class="social-media">
+        <h2 class="social-title">Media Resmi Kami</h2>
+        <div class="social-buttons">
+            <a href="https://wa.me/6285860647972" target="_blank" class="social-button whatsapp-button">
+                <i class="fab fa-whatsapp social-icon"></i>
+                WhatsApp
+            </a>
+            <a href="https://www.tiktok.com/@pstore_officiall6?_r=1&_t=ZS-912rpH0qiaf" target="_blank" class="social-button tiktok-button">
+                <i class="fab fa-tiktok social-icon"></i>
+                TikTok
+            </a>
+        </div>
+    </div>
+</body>
+</html>
